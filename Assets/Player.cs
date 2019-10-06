@@ -92,6 +92,7 @@ public class Player : MonoBehaviour
 
         }
     }
+    
 
     public void PlaceVegetable(int index,Plate plate)
     {
@@ -135,7 +136,14 @@ public class Player : MonoBehaviour
             {
                 collision.gameObject.GetComponent<Plate>().btn.interactable = false;
             }
+            for (int i = 0; i < vegInHandBtn.Count; i++)
+            {
+              //  vegInHandBtn[i].gameObject.SetActive(false);
+                vegInHandBtn[i].GetComponent<Button>().onClick.RemoveAllListeners();
+
+            }
         }
+
     }
 
     public void Refresh(Plate plate)
