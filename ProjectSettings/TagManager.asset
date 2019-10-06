@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Veg
   - Chop
+  - Customer
   layers:
   - Default
   - TransparentFX

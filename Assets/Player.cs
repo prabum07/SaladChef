@@ -121,6 +121,37 @@ public class Player : MonoBehaviour
                 }
                 }
         }
+        if(col.gameObject.GetComponent<Customer>())
+        {
+            if (Input.GetKeyDown(KeyCode.F))
+            {
+                if (ChoppedVegetable.Count == col.gameObject.GetComponent<Customer>().needed.Count)
+                {
+                    for(int i=0;i<ChoppedVegetable.Count;i++)
+                    {
+                        if(col.gameObject.GetComponent<Customer>().needed.Contains(ChoppedVegetable[i]))
+                        {
+                        }else
+                        {
+                            col.gameObject.GetComponent<Customer>().isAngry = true;
+                            col.gameObject.GetComponent<Customer>().TimeDecreaseRate *= 2;
+                            Debug.LogError("wrong");
+
+                            break;
+                        }
+                    }
+
+
+                }else
+                {
+                    col.gameObject.GetComponent<Customer>().isAngry = true;
+                    col.gameObject.GetComponent<Customer>().TimeDecreaseRate *= 2;
+
+                    Debug.LogError("wrong");
+
+                }
+            }
+        }
      }
 
     public void ChopVegetable(int index)
