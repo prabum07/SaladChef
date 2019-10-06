@@ -9,7 +9,11 @@ public class Player : MonoBehaviour
     public Rigidbody2D rb;
     public int MoveAmount;
     public List<char> VegetablesInHand = new List<char>();
+    public List<char> ChoppedVegetable = new List<char>();
+
     public List<Button> vegInHandBtn = new List<Button>();
+    public List<Button> ChoppedVegBtn = new List<Button>();
+
 
     void Start()
     {
@@ -65,11 +69,110 @@ public class Player : MonoBehaviour
                 }
             }
         }
+
+        if (col.tag == "Chop")
+        {
+            if(Input.GetKeyDown(KeyCode.F))
+            {
+                Debug.LogError("chop");
+                if(VegetablesInHand.Count!=0)
+                    ChopVegetable(0);
+            }
+            if (Input.GetKeyDown(KeyCode.G))
+            {
+                if (VegetablesInHand.Count == 2)
+                {
+                    ChopVegetable(1);
+                }
+            }
+        }
+        if (col.gameObject.GetComponent<Plate>())
+        {
+            if (col.gameObject.GetComponent<Plate>().holdBool == false)
+            {
+                if (VegetablesInHand.Count!=0)
+                {
+                    if (Input.GetKeyDown(KeyCode.F))
+                    {
+                        PlaceVegetable(0, col.gameObject.GetComponent<Plate>());
+                        Debug.LogError(VegetablesInHand.Count);
+
+                        
+                    }
+                    if (VegetablesInHand.Count == 2)
+                    {
+                        Debug.LogError(col.gameObject.name);
+
+                        if (Input.GetKeyDown(KeyCode.G))
+                        {
+                            Debug.LogError(col.gameObject.name);
+
+                            PlaceVegetable(1, col.gameObject.GetComponent<Plate>());
+                        }
+
+                    }
+                }
+
+            }else
+            {
+                if (Input.GetKeyDown(KeyCode.H))
+                {
+                    TakeVegFromPlate(col.gameObject.GetComponent<Plate>().Hold, col.gameObject.GetComponent<Plate>());
+                }
+                }
+        }
+     }
+
+    public void ChopVegetable(int index)
+    {
+        char temp = VegetablesInHand[index];
+
+        if (!ChoppedVegetable.Contains(temp))
+        {
+            VegetablesInHand.RemoveAt(index);
+
+            ChoppedVegetable.Add(temp);
+            ButtonRefresh();
+        }
+        RefreshChoppedBtn();
+      //  ButtonRefresh();
+
+    }
+    public void RefreshChoppedBtn()
+    {
+        for (int i = 0; i < 6; i++)
+        {
+            ChoppedVegBtn[i].gameObject.SetActive(false);
+        }
+        for (int i = 0; i < ChoppedVegetable.Count; i++)
+        {
+            ChoppedVegBtn[i].gameObject.SetActive(true);
+
+            ChoppedVegBtn[i].transform.GetChild(0).GetComponent<Text>().text = ChoppedVegetable[i].ToString();
+        }
+        for(int i=0;i<VegetablesInHand.Count;i++)
+        {
+            vegInHandBtn[i].gameObject.SetActive(true);
+            vegInHandBtn[i].transform.GetChild(0).GetComponent<Text>().text = VegetablesInHand[i].ToString();
+
+        }
+    }
+
+    public void ButtonRefresh()
+    {
+         for(int i=0;i<2;i++)
+        {
+            vegInHandBtn[i].gameObject.SetActive(false);
+        }
+         for(int i=0;i<VegetablesInHand.Count;i++)
+        {
+            vegInHandBtn[i].transform.GetChild(0).GetComponent<Text>().text = VegetablesInHand[i].ToString();
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.gameObject.GetComponent<Plate>())
+     /*   if(collision.gameObject.GetComponent<Plate>())
         {
            if(collision.gameObject.GetComponent<Plate>().holdBool==false)
             {
@@ -90,7 +193,7 @@ public class Player : MonoBehaviour
                 collision.gameObject.GetComponent<Plate>().btn.interactable = true;
             }
 
-        }
+        }*/
     }
     
 
