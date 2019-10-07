@@ -8,6 +8,7 @@ TagManager:
   - Chop
   - Customer
   - powerup
+  - Trash
   layers:
   - Default
   - TransparentFX

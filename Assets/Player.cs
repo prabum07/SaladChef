@@ -42,7 +42,8 @@ public class Player : MonoBehaviour
             PlayerTime--;
         }
     }
-
+    public GameObject Load;
+    public bool NoMove;
     // Update is called once per frame
     public Vector3 dir;
     void FixedUpdate()
@@ -70,14 +71,31 @@ public class Player : MonoBehaviour
         {
             dir = Vector2.right;
         }
-        rb.velocity = dir*new Vector2(MoveAmount,MoveAmount);
+        if(NoMove==false)
+            rb.velocity = dir*new Vector2(MoveAmount,MoveAmount);
     }
     public string Name;
     void OnTriggerStay2D(Collider2D col)
     {
         char[] arr = col.gameObject.name.ToCharArray();
         Debug.Log( arr[0]);
-        if (col.tag == "Veg")
+
+        if (col.tag == "Trash")
+        {
+          //  Debug.LogError("Trash");
+            if (Input.GetKeyDown(leftpick))
+            {
+                if (ChoppedVegetable.Count != 0)
+                {
+                    ChoppedVegetable.Clear();
+                    RefreshChoppedBtn();
+                    Score -= 5;
+                    if (Score <= 0)
+                        Score = 0;
+                }
+            }
+        }
+            if (col.tag == "Veg")
         {
             if (Input.GetKeyDown(leftpick))
             {
@@ -257,10 +275,19 @@ public class Player : MonoBehaviour
 
             ChoppedVegetable.Add(temp);
             ButtonRefresh();
+            StartCoroutine(ChopWait());
         }
         RefreshChoppedBtn();
       //  ButtonRefresh();
 
+    }
+    IEnumerator ChopWait()
+    {
+        Load.gameObject.SetActive(true);
+        NoMove = true;
+        yield return new WaitForSeconds(2.5f);
+        Load.gameObject.SetActive(false);
+        NoMove = false;
     }
     public void RefreshChoppedBtn()
     {
