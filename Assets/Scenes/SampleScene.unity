@@ -11684,7 +11684,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!61 &1459040551
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -13097,6 +13097,9 @@ MonoBehaviour:
   yStart: {fileID: 1573687442}
   yEnd: {fileID: 36614767}
   PowerUp: {fileID: 1459040550}
+  score: {fileID: 21300000, guid: 03e6aa63144f0cd4ead8325808e87728, type: 3}
+  speed: {fileID: 21300000, guid: 4118f55c5e2e4e04aa115f94218eb88d, type: 3}
+  time: {fileID: 21300000, guid: cf52045da4a369c45a87008cecb735d3, type: 3}
   Instructions: {fileID: 1346155943}
 --- !u!4 &1592356506
 Transform:

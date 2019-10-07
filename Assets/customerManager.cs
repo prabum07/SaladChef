@@ -18,7 +18,9 @@ public class customerManager : MonoBehaviour
     public GameObject yEnd;
     public GameObject PowerUp;
 
-
+    public Sprite score;
+    public Sprite speed;
+    public Sprite time;
     public Text Instructions;
     // Start is called before the first frame update
     private void Awake()
@@ -30,7 +32,7 @@ public class customerManager : MonoBehaviour
     void Start()
     {
     }
-
+    public int PowerUpNum;
     public void RandomSpawnPowerUp()
     {
         PowerUp.gameObject.SetActive(true);

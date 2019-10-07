@@ -83,6 +83,21 @@ public class Customer : MonoBehaviour
 
     IEnumerator powerupTimer()
     {
+        if (customerManager.customerManagers.PowerUpNum == 0)
+        {
+            customerManager.customerManagers.PowerUp.GetComponent<SpriteRenderer>().sprite = customerManager.customerManagers.speed;
+
+        }
+        else if (customerManager.customerManagers.PowerUpNum == 1)
+        {
+            customerManager.customerManagers.PowerUp.GetComponent<SpriteRenderer>().sprite = customerManager.customerManagers.time;
+
+        }
+        else if (customerManager.customerManagers.PowerUpNum == 2)
+        {
+            customerManager.customerManagers.PowerUp.GetComponent<SpriteRenderer>().sprite = customerManager.customerManagers.score;
+
+        }
         customerManager.customerManagers.PowerUp.gameObject.SetActive(true);
         yield return new WaitForSeconds(5f);
         customerManager.customerManagers.PowerUp.gameObject.SetActive(false);

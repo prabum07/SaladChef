@@ -31,6 +31,7 @@ public class Player : MonoBehaviour
      //   rb.AddForce(Vector2.up*MoveAmount, ForceMode2D.Force  );
         rb.velocity = Vector3.zero;
         StartCoroutine(playerTimer());
+
     }
     IEnumerator playerTimer()
     {
@@ -203,23 +204,28 @@ public class Player : MonoBehaviour
             if(canCaughtPowerUp)
             {
                 customerManager.customerManagers.PowerUp.gameObject.SetActive(false);
-                int rand = Random.Range(0, 3);
+                customerManager.customerManagers.PowerUpNum = Random.Range(0, 3);
                 canCaughtPowerUp = false;
-                if(rand==0)
+                if(customerManager.customerManagers.PowerUpNum == 0)
                 {
                     Debug.LogError("speed");
+                    customerManager.customerManagers.PowerUp.GetComponent<SpriteRenderer>().sprite = customerManager.customerManagers.speed;
                     StartCoroutine(instruc(Name + " Gained Speed"));
 
                     StartCoroutine(PlayerSpeedUp());
-                }else if(rand==1)
+                }else if(customerManager.customerManagers.PowerUpNum == 1)
                 {
+                    customerManager.customerManagers.PowerUp.GetComponent<SpriteRenderer>().sprite = customerManager.customerManagers.time;
+
                     Debug.LogError("time");
                     StartCoroutine(instruc(Name + " Gained Time"));
 
                     PlayerTime += 30;
-                }else if(rand==2)
+                }else if(customerManager.customerManagers.PowerUpNum == 2)
                 {
                     Debug.LogError("score");
+                    customerManager.customerManagers.PowerUp.GetComponent<SpriteRenderer>().sprite = customerManager.customerManagers.score;
+
                     StartCoroutine(instruc(Name + " Gained Score"));
 
                     Score += 10;
