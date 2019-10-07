@@ -22,6 +22,9 @@ public class Player : MonoBehaviour
     public KeyCode leftpick;
     public KeyCode rightpick;
     public KeyCode container;
+
+    public Text PlayerTimext;
+    public Text PlayerScoreTxt;
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -34,6 +37,7 @@ public class Player : MonoBehaviour
         while(PlayerTime>1)
         {
             yield return new WaitForSeconds(1f);
+            PlayerTimext.text = PlayerTime.ToString();
             PlayerTime--;
         }
     }
@@ -42,6 +46,7 @@ public class Player : MonoBehaviour
     public Vector3 dir;
     void FixedUpdate()
     {
+        PlayerScoreTxt.text = Score.ToString();
         if(Input.GetKey(up))
         {
             dir = Vector2.up;

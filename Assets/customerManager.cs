@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class customerManager : MonoBehaviour
 {
@@ -16,6 +17,11 @@ public class customerManager : MonoBehaviour
     public GameObject yStart;
     public GameObject yEnd;
     public GameObject PowerUp;
+
+    public Text Player1Time;
+    public Text Player2time;
+    public Text player1Score;
+    public Text player2score;
     // Start is called before the first frame update
     private void Awake()
     {
