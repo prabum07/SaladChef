@@ -71,6 +71,7 @@ public class Player : MonoBehaviour
         }
         rb.velocity = dir*new Vector2(MoveAmount,MoveAmount);
     }
+    public string Name;
     void OnTriggerStay2D(Collider2D col)
     {
         char[] arr = col.gameObject.name.ToCharArray();
@@ -84,6 +85,7 @@ public class Player : MonoBehaviour
                     if (!VegetablesInHand.Contains(arr[0]))
                     {
                         VegetablesInHand.Add(arr[0]);
+                        StartCoroutine(instruc(Name + " Took " + arr[0] + " Vegetable"));
                         TakeVegetables();
                     }
                 }
@@ -95,13 +97,20 @@ public class Player : MonoBehaviour
             if(Input.GetKeyDown(leftpick))
             {
                 Debug.LogError("chop");
-                if(VegetablesInHand.Count!=0)
+                if (VegetablesInHand.Count != 0)
+                {
+                    StartCoroutine(instruc(Name + " Chopped " + VegetablesInHand[0] + " Vegetable"));
+
                     ChopVegetable(0);
+
+                }
             }
             if (Input.GetKeyDown(rightpick))
             {
                 if (VegetablesInHand.Count == 2)
                 {
+                    StartCoroutine(instruc(Name + " Chopped " + VegetablesInHand[1] + " Vegetable"));
+
                     ChopVegetable(1);
                 }
             }
@@ -114,6 +123,8 @@ public class Player : MonoBehaviour
                 {
                     if (Input.GetKeyDown(leftpick))
                     {
+                        StartCoroutine(instruc(Name + " Kept " + VegetablesInHand[0] + " Vegetable"));
+
                         PlaceVegetable(0, col.gameObject.GetComponent<Plate>());
                         Debug.LogError(VegetablesInHand.Count);
 
@@ -126,6 +137,7 @@ public class Player : MonoBehaviour
                         if (Input.GetKeyDown(rightpick))
                         {
                             Debug.LogError(col.gameObject.name);
+                            StartCoroutine(instruc(Name + " Kept " + VegetablesInHand[1] + " Vegetable"));
 
                             PlaceVegetable(1, col.gameObject.GetComponent<Plate>());
                         }
@@ -137,6 +149,8 @@ public class Player : MonoBehaviour
             {
                 if (Input.GetKeyDown(container))
                 {
+                    StartCoroutine(instruc(Name + " Took " + col.gameObject.GetComponent<Plate>().Hold + " Vegetable"));
+
                     TakeVegFromPlate(col.gameObject.GetComponent<Plate>().Hold, col.gameObject.GetComponent<Plate>());
                 }
                 }
@@ -194,16 +208,19 @@ public class Player : MonoBehaviour
                 if(rand==0)
                 {
                     Debug.LogError("speed");
+                    StartCoroutine(instruc(Name + " Gained Speed"));
 
                     StartCoroutine(PlayerSpeedUp());
                 }else if(rand==1)
                 {
                     Debug.LogError("time");
+                    StartCoroutine(instruc(Name + " Gained Time"));
 
                     PlayerTime += 30;
                 }else if(rand==2)
                 {
                     Debug.LogError("score");
+                    StartCoroutine(instruc(Name + " Gained Score"));
 
                     Score += 10;
                 }
@@ -218,7 +235,12 @@ public class Player : MonoBehaviour
         MoveAmount -= 5;
     }
     public bool canCaughtPowerUp;
-
+    public IEnumerator instruc(string temp)
+    {
+        customerManager.customerManagers.Instructions.text = temp;
+        yield return new WaitForSeconds(1f);
+        customerManager.customerManagers.Instructions.text = "";
+    }
     public void ChopVegetable(int index)
     {
         char temp = VegetablesInHand[index];
@@ -268,28 +290,10 @@ public class Player : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-     /*   if(collision.gameObject.GetComponent<Plate>())
+        if(collision.transform.childCount>=1)
         {
-           if(collision.gameObject.GetComponent<Plate>().holdBool==false)
-            {
-                for(int i=0;i<vegInHandBtn.Count;i++)
-                {
-                    vegInHandBtn[i].gameObject.SetActive(false);
-                    vegInHandBtn[i].GetComponent<Button>().onClick.RemoveAllListeners();
-
-                }
-                for(int i=0;i<VegetablesInHand.Count;i++)
-                {
-                    vegInHandBtn[i].gameObject.SetActive(true);
-                    int k = i;
-                    vegInHandBtn[i].onClick.AddListener(() => PlaceVegetable(k, collision.gameObject.GetComponent<Plate>()));
-                }
-            }else
-            {
-                collision.gameObject.GetComponent<Plate>().btn.interactable = true;
-            }
-
-        }*/
+            collision.transform.GetChild(0).gameObject.SetActive(true);
+        }
     }
     
 
@@ -329,18 +333,9 @@ public class Player : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.gameObject.GetComponent<Plate>())
+        if (collision.transform.childCount >= 1)
         {
-            if (collision.gameObject.GetComponent<Plate>().holdBool == true)
-            {
-                collision.gameObject.GetComponent<Plate>().btn.interactable = false;
-            }
-            for (int i = 0; i < vegInHandBtn.Count; i++)
-            {
-              //  vegInHandBtn[i].gameObject.SetActive(false);
-                vegInHandBtn[i].GetComponent<Button>().onClick.RemoveAllListeners();
-
-            }
+            collision.transform.GetChild(0).gameObject.SetActive(false);
         }
 
     }

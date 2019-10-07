@@ -18,10 +18,8 @@ public class customerManager : MonoBehaviour
     public GameObject yEnd;
     public GameObject PowerUp;
 
-    public Text Player1Time;
-    public Text Player2time;
-    public Text player1Score;
-    public Text player2score;
+
+    public Text Instructions;
     // Start is called before the first frame update
     private void Awake()
     {

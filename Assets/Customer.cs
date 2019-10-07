@@ -24,7 +24,9 @@ public class Customer : MonoBehaviour
     public int TimeDecreaseRate=1;
     public void Precalculate()
     {
+        WaitMeter.color = Color.green;
         needed.Clear();
+        TimeDecreaseRate = 1;
         isAngry = false;
         isActive = true;
         Gotten = false;
@@ -118,7 +120,12 @@ public class Customer : MonoBehaviour
     }
     IEnumerator MoveBack()
     {
-        if(Gotten==false)
+        NeedTxt.gameObject.SetActive(false);
+        WaitMeter.transform.parent.gameObject.SetActive(false);
+        WaitMeter.fillAmount = 1;
+        WaitMeter.color = Color.green;
+        isActive = false;
+        if (Gotten==false)
         {
             for(int i=0;i<customerManager.customerManagers.Players.Count;i++)
             {
@@ -140,11 +147,7 @@ public class Customer : MonoBehaviour
             temp += 0.01f;
             yield return null;
         }
-        NeedTxt.gameObject.SetActive(false);
-        WaitMeter.transform.parent.gameObject.SetActive(false);
-        WaitMeter.fillAmount = 1;
-        WaitMeter.color = Color.green;
-        isActive = false;
+        
 
     }
     // Update is called once per frame
