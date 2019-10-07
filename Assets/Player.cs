@@ -71,8 +71,11 @@ public class Player : MonoBehaviour
         {
             dir = Vector2.right;
         }
-        if(NoMove==false)
-            rb.velocity = dir*new Vector2(MoveAmount,MoveAmount);
+        if (NoMove == false)
+        {if(PlayerTime>=1)
+            rb.velocity = dir * new Vector2(MoveAmount, MoveAmount);
+
+        }
     }
     public string Name;
     void OnTriggerStay2D(Collider2D col)
@@ -265,6 +268,7 @@ public class Player : MonoBehaviour
         yield return new WaitForSeconds(1f);
         customerManager.customerManagers.Instructions.text = "";
     }
+    public Text ResultTxt;
     public void ChopVegetable(int index)
     {
         char temp = VegetablesInHand[index];

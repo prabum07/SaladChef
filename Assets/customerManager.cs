@@ -33,6 +33,7 @@ public class customerManager : MonoBehaviour
     {
     }
     public int PowerUpNum;
+   
     public void RandomSpawnPowerUp()
     {
         PowerUp.gameObject.SetActive(true);
@@ -54,8 +55,20 @@ public class customerManager : MonoBehaviour
     }
 
     // Update is called once per frame
+    public GameObject ResultBoard;
     void Update()
     {
-        
+        if(Players[0].PlayerTime==0 && Players[1].PlayerTime==0)
+        {
+            ResultBoard.gameObject.SetActive(true);
+            Players[0].ResultTxt.text = Players[0].Score.ToString();
+
+            Players[1].ResultTxt.text = Players[1].Score.ToString();
+
+        }
+    }
+    public void Reload()
+    {
+        UnityEngine.SceneManagement.SceneManager.LoadScene(0);
     }
 }
