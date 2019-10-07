@@ -9,7 +9,11 @@ public class Customer : MonoBehaviour
     public GameObject end;
     public bool isActive;
     public bool isAngry;
+    public bool Gotten;
     public List<char> needed = new List<char>();
+    public Player Assist;
+    
+
     void Start()
     {
         Precalculate();
@@ -33,20 +37,47 @@ public class Customer : MonoBehaviour
 
         }
         time = needed.Count * 20;
+        seventyPercentTime = time * (0.7f);
         StartCoroutine(Move());
-        StartCoroutine(Timer());
         
 
     }
     public int time;
+    public float seventyPercentTime;
     IEnumerator Timer()
     {
         while(time>1)
         {
             yield return new WaitForSeconds(1);
             time-=TimeDecreaseRate;
+            if(Gotten)
+            {
+                if(time>seventyPercentTime)
+                {
+                    Assist.Score += 10;
+                    Assist.canCaughtPowerUp = true;
+                    customerManager.customerManagers.RandomSpawnPowerUp();
+                    StartCoroutine(powerupTimer());
+                }
+                else
+                {
+                    Assist.Score += 5;
+
+                }
+                Assist.ChoppedVegetable.Clear();
+                Assist.RefreshChoppedBtn();
+                break;
+            }
         }
         StartCoroutine(MoveBack());
+
+    }
+
+    IEnumerator powerupTimer()
+    {
+        customerManager.customerManagers.PowerUp.gameObject.SetActive(true);
+        yield return new WaitForSeconds(5f);
+        customerManager.customerManagers.PowerUp.gameObject.SetActive(false);
 
     }
     IEnumerator Move()
@@ -59,9 +90,25 @@ public class Customer : MonoBehaviour
             temp+=0.01f;
             yield return null;
         }
+        StartCoroutine(Timer());
+
     }
     IEnumerator MoveBack()
     {
+        if(Gotten==false)
+        {
+            for(int i=0;i<customerManager.customerManagers.Players.Count;i++)
+            {
+                customerManager.customerManagers.Players[i].Score -= 5;
+            }
+            for (int i = 0; i < customerManager.customerManagers.Players.Count; i++)
+            {
+                if(customerManager.customerManagers.Players[i].Score<=0)
+                {
+                    customerManager.customerManagers.Players[i].Score = 0;
+                }
+            }
+            }
         temp = 0f;
         while (temp < 0.9f)
         {

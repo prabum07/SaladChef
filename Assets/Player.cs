@@ -13,21 +13,36 @@ public class Player : MonoBehaviour
 
     public List<Button> vegInHandBtn = new List<Button>();
     public List<Button> ChoppedVegBtn = new List<Button>();
-
-
+    public int Score;
+    public int PlayerTime = 300;
+    public KeyCode up;
+    public KeyCode down;
+    public KeyCode left;
+    public KeyCode right;
+    public KeyCode leftpick;
+    public KeyCode rightpick;
+    public KeyCode container;
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
      //   rb.AddForce(Vector2.up*MoveAmount, ForceMode2D.Force  );
         rb.velocity = Vector3.zero;
-
+        StartCoroutine(playerTimer());
+    }
+    IEnumerator playerTimer()
+    {
+        while(PlayerTime>1)
+        {
+            yield return new WaitForSeconds(1f);
+            PlayerTime--;
+        }
     }
 
     // Update is called once per frame
     public Vector3 dir;
     void FixedUpdate()
     {
-        if(Input.GetKey(KeyCode.W))
+        if(Input.GetKey(up))
         {
             dir = Vector2.up;
 
@@ -35,17 +50,17 @@ public class Player : MonoBehaviour
         {
             dir = Vector3.zero;
         }
-         if(Input.GetKey(KeyCode.S))
+         if(Input.GetKey(down))
         {
             dir = Vector2.down;
 
         }
-        if (Input.GetKey(KeyCode.A))
+        if (Input.GetKey(left))
         {
             dir = Vector2.left;
 
         }
-        if (Input.GetKey(KeyCode.D))
+        if (Input.GetKey(right))
         {
             dir = Vector2.right;
         }
@@ -57,7 +72,7 @@ public class Player : MonoBehaviour
         Debug.Log( arr[0]);
         if (col.tag == "Veg")
         {
-            if (Input.GetKeyDown(KeyCode.F))
+            if (Input.GetKeyDown(leftpick))
             {
                 if (VegetablesInHand.Count < 2)
                 {
@@ -72,13 +87,13 @@ public class Player : MonoBehaviour
 
         if (col.tag == "Chop")
         {
-            if(Input.GetKeyDown(KeyCode.F))
+            if(Input.GetKeyDown(leftpick))
             {
                 Debug.LogError("chop");
                 if(VegetablesInHand.Count!=0)
                     ChopVegetable(0);
             }
-            if (Input.GetKeyDown(KeyCode.G))
+            if (Input.GetKeyDown(rightpick))
             {
                 if (VegetablesInHand.Count == 2)
                 {
@@ -92,7 +107,7 @@ public class Player : MonoBehaviour
             {
                 if (VegetablesInHand.Count!=0)
                 {
-                    if (Input.GetKeyDown(KeyCode.F))
+                    if (Input.GetKeyDown(leftpick))
                     {
                         PlaceVegetable(0, col.gameObject.GetComponent<Plate>());
                         Debug.LogError(VegetablesInHand.Count);
@@ -103,7 +118,7 @@ public class Player : MonoBehaviour
                     {
                         Debug.LogError(col.gameObject.name);
 
-                        if (Input.GetKeyDown(KeyCode.G))
+                        if (Input.GetKeyDown(rightpick))
                         {
                             Debug.LogError(col.gameObject.name);
 
@@ -115,7 +130,7 @@ public class Player : MonoBehaviour
 
             }else
             {
-                if (Input.GetKeyDown(KeyCode.H))
+                if (Input.GetKeyDown(container))
                 {
                     TakeVegFromPlate(col.gameObject.GetComponent<Plate>().Hold, col.gameObject.GetComponent<Plate>());
                 }
@@ -123,8 +138,10 @@ public class Player : MonoBehaviour
         }
         if(col.gameObject.GetComponent<Customer>())
         {
-            if (Input.GetKeyDown(KeyCode.F))
+            col.gameObject.GetComponent<Customer>().Assist = this;
+            if (Input.GetKeyDown(leftpick))
             {
+                bool pass=false;
                 if (ChoppedVegetable.Count == col.gameObject.GetComponent<Customer>().needed.Count)
                 {
                     for(int i=0;i<ChoppedVegetable.Count;i++)
@@ -133,6 +150,7 @@ public class Player : MonoBehaviour
                         {
                         }else
                         {
+                            pass = true;
                             col.gameObject.GetComponent<Customer>().isAngry = true;
                             col.gameObject.GetComponent<Customer>().TimeDecreaseRate *= 2;
                             Debug.LogError("wrong");
@@ -146,13 +164,52 @@ public class Player : MonoBehaviour
                 {
                     col.gameObject.GetComponent<Customer>().isAngry = true;
                     col.gameObject.GetComponent<Customer>().TimeDecreaseRate *= 2;
+                    pass = true;
 
                     Debug.LogError("wrong");
 
                 }
+                if(pass==false)
+                {
+                    col.gameObject.GetComponent<Customer>().Gotten = true;
+                }
+            }
+            
+        }
+        if(col.tag == "powerup")
+        {
+            if(canCaughtPowerUp)
+            {
+                customerManager.customerManagers.PowerUp.gameObject.SetActive(false);
+                int rand = Random.Range(0, 3);
+                canCaughtPowerUp = false;
+                if(rand==0)
+                {
+                    Debug.LogError("speed");
+
+                    StartCoroutine(PlayerSpeedUp());
+                }else if(rand==1)
+                {
+                    Debug.LogError("time");
+
+                    PlayerTime += 30;
+                }else if(rand==2)
+                {
+                    Debug.LogError("score");
+
+                    Score += 10;
+                }
             }
         }
      }
+
+    IEnumerator PlayerSpeedUp()
+    {
+        MoveAmount += 5;
+        yield return new WaitForSeconds(5f);
+        MoveAmount -= 5;
+    }
+    public bool canCaughtPowerUp;
 
     public void ChopVegetable(int index)
     {
