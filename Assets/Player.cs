@@ -151,6 +151,7 @@ public class Player : MonoBehaviour
                         }else
                         {
                             pass = true;
+                            col.gameObject.GetComponent<Customer>().WaitMeter.color = Color.red;
                             col.gameObject.GetComponent<Customer>().isAngry = true;
                             col.gameObject.GetComponent<Customer>().TimeDecreaseRate *= 2;
                             Debug.LogError("wrong");
@@ -162,6 +163,8 @@ public class Player : MonoBehaviour
 
                 }else
                 {
+                    col.gameObject.GetComponent<Customer>().WaitMeter.color = Color.red;
+
                     col.gameObject.GetComponent<Customer>().isAngry = true;
                     col.gameObject.GetComponent<Customer>().TimeDecreaseRate *= 2;
                     pass = true;

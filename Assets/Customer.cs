@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Customer : MonoBehaviour
 {
@@ -12,8 +13,9 @@ public class Customer : MonoBehaviour
     public bool Gotten;
     public List<char> needed = new List<char>();
     public Player Assist;
-    
 
+    public Text NeedTxt;
+    public Image WaitMeter;
     void Start()
     {
         Precalculate();
@@ -42,7 +44,7 @@ public class Customer : MonoBehaviour
         
 
     }
-    public int time;
+    public float time;
     public float seventyPercentTime;
     IEnumerator Timer()
     {
@@ -50,6 +52,7 @@ public class Customer : MonoBehaviour
         {
             yield return new WaitForSeconds(1);
             time-=TimeDecreaseRate;
+            WaitMeter.fillAmount = (float)(time * 1/((needed.Count*20)));
             if(Gotten)
             {
                 if(time>seventyPercentTime)
@@ -82,6 +85,10 @@ public class Customer : MonoBehaviour
     }
     IEnumerator Move()
     {
+        NeedTxt.gameObject.SetActive(true);
+
+        WaitMeter.transform.parent.gameObject.SetActive(true);
+        WaitMeter.fillAmount = 1;
          temp = 0f;
         while(temp<0.9f )
         {
@@ -91,7 +98,20 @@ public class Customer : MonoBehaviour
             yield return null;
         }
         StartCoroutine(Timer());
-
+        NeededShowUI();
+    }
+    public void NeededShowUI()
+    {
+        NeedTxt.gameObject.SetActive(true);
+        NeedTxt.text = "";
+        for(int i=0;i<needed.Count;i++)
+        {
+            NeedTxt.text = NeedTxt.text + needed[i] ;
+            if(i!=needed.Count-1)
+            {
+                NeedTxt.text = NeedTxt.text + ",";
+            }
+        }
     }
     IEnumerator MoveBack()
     {
@@ -117,6 +137,11 @@ public class Customer : MonoBehaviour
             temp += 0.01f;
             yield return null;
         }
+        NeedTxt.gameObject.SetActive(false);
+        WaitMeter.transform.parent.gameObject.SetActive(false);
+        WaitMeter.fillAmount = 1;
+        WaitMeter.color = Color.green;
+
     }
     // Update is called once per frame
     void Update()
