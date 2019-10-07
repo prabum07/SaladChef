@@ -20,6 +20,7 @@ public class customerManager : MonoBehaviour
     private void Awake()
     {
         customerManagers = this;
+        StartCoroutine(customerBias());
         //RandomSpawnPowerUp();
     }
     void Start()
@@ -39,7 +40,7 @@ public class customerManager : MonoBehaviour
             int rand = Random.Range(0, 3);
           if(  totalCustomer[rand].isActive==false)
             {
-
+                totalCustomer[rand].Precalculate();
             }
 
             yield return new WaitForSeconds(3f);

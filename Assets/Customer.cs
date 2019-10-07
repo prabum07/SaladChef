@@ -18,7 +18,7 @@ public class Customer : MonoBehaviour
     public Image WaitMeter;
     void Start()
     {
-        Precalculate();
+       // Precalculate();
     }
     public float temp;
     public int TimeDecreaseRate=1;
@@ -26,6 +26,9 @@ public class Customer : MonoBehaviour
     {
         needed.Clear();
         isAngry = false;
+        isActive = true;
+        Gotten = false;
+        Assist = null;
         int rand = Random.Range(1, 4);
         int count = 0;
         while(count!=rand)
@@ -141,6 +144,7 @@ public class Customer : MonoBehaviour
         WaitMeter.transform.parent.gameObject.SetActive(false);
         WaitMeter.fillAmount = 1;
         WaitMeter.color = Color.green;
+        isActive = false;
 
     }
     // Update is called once per frame

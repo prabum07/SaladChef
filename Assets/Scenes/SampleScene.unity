@@ -5485,7 +5485,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: New Text
+  m_Text: 
 --- !u!222 &717738609
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -8969,7 +8969,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: New Text
+  m_Text: 
 --- !u!222 &1305970950
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -11540,6 +11540,7 @@ MonoBehaviour:
   - {fileID: 554980808}
   Players:
   - {fileID: 637744612}
+  - {fileID: 1392485696}
   xStart: {fileID: 1573687442}
   xend: {fileID: 474625445}
   yStart: {fileID: 1573687442}
@@ -13763,7 +13764,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: New Text
+  m_Text: 
 --- !u!222 &2020063822
 CanvasRenderer:
   m_ObjectHideFlags: 0
